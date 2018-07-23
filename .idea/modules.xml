@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Competitive_Programming.iml" filepath="$PROJECT_DIR$/Competitive_Programming.iml" />
       <module fileurl="file://$PROJECT_DIR$/DS+Algos/DS+Algos.iml" filepath="$PROJECT_DIR$/DS+Algos/DS+Algos.iml" />
       <module fileurl="file://$PROJECT_DIR$/Kattis/Kattis.iml" filepath="$PROJECT_DIR$/Kattis/Kattis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/USACO_Gold/USACO_Gold.iml" filepath="$PROJECT_DIR$/USACO_Gold/USACO_Gold.iml" />
     </modules>
   </component>
 </project>
