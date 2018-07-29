@@ -16,19 +16,25 @@ public class circularBarn {
         int[] cumulative=new int[len];
         for(int i=0;i<len;i++){
             cows[i]=Integer.parseInt(br.readLine());
-            cumulative[i]+=cows[i]-1;
+            if(i!=0)
+                cumulative[i]+=cumulative[i-1]+cows[i]-1;
+            else
+                cumulative[i]+=cows[i]-1;
         }
-        int index=len-1;
+        System.out.println(Arrays.toString(cumulative));
+
+        int index=len;
         int sum=0;
         int min= Arrays.stream(cumulative).min().getAsInt();
         if(min!=0)
         while(sum<-min){
-            sum+=cumulative[index];
             index--;
+            sum+=cows[index];
         }
         else
             index=0;
         System.out.println(Arrays.toString(cumulative));
+        System.out.println((index));
 
 
     }
