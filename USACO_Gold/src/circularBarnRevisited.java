@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class circularBarnRevisited {
+    //Incomplete
     public static int len;
     public static long minDist(ArrayList<Integer> entrances,int i){
         long min=Integer.MAX_VALUE;
