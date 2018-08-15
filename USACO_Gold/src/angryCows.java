@@ -1,4 +1,3 @@
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.TreeSet;
  * Created by user on 7/25/2018.
  */
 public class angryCows {
+    //Usaco Gold binary searches
     static TreeSet<Long> locations;
     //Check if the explosion can propagate all the way to the left,
     // given:a specific power and starting point
