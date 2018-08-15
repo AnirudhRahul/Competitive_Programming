@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class primes{
+    //find primes greater than start value to use as mod bases
     public static void main(String args[]){
 //        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         int start=10000;
