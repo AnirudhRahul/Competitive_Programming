@@ -37,7 +37,7 @@ public class circularBarn {
 
     public static int len;
     public static int[] cows;
-
+    //Circular Sweep
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("cbarn.in"));
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("cbarn.out")));
