@@ -2,9 +2,9 @@
  * Created by user on 7/27/2018.
  */
 //Uses path compression and union by rank
-public class DisjointSet {
-    static int[] parent;
-    static int[] rank;
+class DisjointSet {
+    int[] parent;
+    int[] rank;
     public DisjointSet(int size){
         parent=new int[size];
         rank=new int[size];
