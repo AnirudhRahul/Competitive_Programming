@@ -29,7 +29,7 @@ public class bovineGenomics {
         private int hash(int l, int r){
             if(l==0)
                 return hashValues[r];
-            return (hashValues[r]-hashValues[l-1]);
+            return (hashValues[r]-hashValues[l-1]);                                     
         }
     }
     public static void main(String args[]){
