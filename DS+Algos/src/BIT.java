@@ -19,6 +19,12 @@ public class BIT {
 
         }
     }
+
+    public BIT(int len){
+        data=new int[len];
+        tree=new long[len+1];
+    }
+
     //sum from 0 to endIndex inclusive
     public long rangeSum(int endIndex){
         endIndex++;
@@ -39,7 +45,7 @@ public class BIT {
         int val=delta;
         while(fenIndex<tree.length){
             tree[fenIndex]+=val;
-            fenIndex+=Integer.lowestOneBit(index);
+            fenIndex+=Integer.lowestOneBit(fenIndex);
         }
     }
 
@@ -48,7 +54,7 @@ public class BIT {
         int val=newVal-data[index];
         while(fenIndex<tree.length){
             tree[fenIndex]+=val;
-            fenIndex+=Integer.lowestOneBit(index);
+            fenIndex+=Integer.lowestOneBit(fenIndex);
         }
     }
 
