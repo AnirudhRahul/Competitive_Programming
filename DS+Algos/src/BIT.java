@@ -22,7 +22,7 @@ public class BIT {
     //sum from 0 to endIndex inclusive
     public long rangeSum(int endIndex){
         endIndex++;
-        int sum=0;
+        long sum=0;
         while(endIndex>0){
             sum+=tree[endIndex];
             endIndex-=Integer.lowestOneBit(endIndex);
@@ -34,7 +34,23 @@ public class BIT {
         return rangeSum(r)-rangeSum(l-1);
     }
 
+    public void updateDelta(int index, int delta){
+        int fenIndex=index+1;
+        int val=delta;
+        while(fenIndex<tree.length){
+            tree[fenIndex]+=val;
+            fenIndex+=Integer.lowestOneBit(index);
+        }
+    }
 
+    public void updateVal(int index, int newVal){
+        int fenIndex=index+1;
+        int val=newVal-data[index];
+        while(fenIndex<tree.length){
+            tree[fenIndex]+=val;
+            fenIndex+=Integer.lowestOneBit(index);
+        }
+    }
 
     public String toString(){
         return "Tree: " + Arrays.toString(tree)+"\n"+"Data:" + Arrays.toString(data);
