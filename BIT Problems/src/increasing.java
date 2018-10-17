@@ -8,9 +8,9 @@ import java.util.StringTokenizer;
 public class increasing{
     static class BIT {
         long[] tree;
-        int[] data;
+        long[] data;
         public BIT(int len){
-            data=new int[len];
+            data=new long[len];
             tree=new long[len];
         }
         //sum from 0 to endIndex inclusive
@@ -28,9 +28,9 @@ public class increasing{
             return rangeSum(r)-rangeSum(l-1);
         }
 
-        public void updateDelta(int index, int delta){
+        public void updateDelta(int index, long delta){
             int fenIndex=index+1;
-            int val=delta;
+            long val=delta;
             data[index]+=delta;
             while(fenIndex<tree.length){
                 tree[fenIndex]+=val;
@@ -38,9 +38,9 @@ public class increasing{
             }
         }
 
-        public void updateVal(int index, int newVal){
+        public void updateVal(int index, long newVal){
             int fenIndex=index+1;
-            int val=newVal-data[index];
+            long val=newVal-data[index];
             data[index]=newVal;
             while(fenIndex<tree.length){
                 tree[fenIndex]+=val;
@@ -56,13 +56,16 @@ public class increasing{
     final static long mod=1000000007;
     public static void main(String[] args) throws IOException {
         BufferedReader br=new BufferedReader(new FileReader("C:\\Users\\Anirudh\\IdeaProjects\\Competitive_Programming\\BIT Problems\\src\\increasing.in"));
+//        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         int cases=Integer.parseInt(br.readLine());
 
         for(int d=1;d<=cases;d++){
             StringTokenizer stringTokenizer=new StringTokenizer(br.readLine());
             int len=Integer.parseInt(stringTokenizer.nextToken());
             int choose=Integer.parseInt(stringTokenizer.nextToken());
-            BIT tree=new BIT(len+10);
+            BIT[] tree=new BIT[choose];
+            for(int i=0;i<tree.length;i++)
+                tree[i]=new BIT(len+10);
             int[] order=new int[len];
             int[] sorted=new int[len];
             StringTokenizer tokenizer=new StringTokenizer(br.readLine());
@@ -77,33 +80,19 @@ public class increasing{
             for(int i=0;i<len;i++)
                 order[i]=compress.get(order[i]);
             long ans=0;
-            for (int i=0;i<order.length;i++){
-                tree.updateDelta(order[i],1);
-                long sum=tree.rangeSum(0,order[i]-1);
-                BigInteger product=BigInteger.ONE;
-                if(sum<choose-1)
-                    continue;
 
-                //sum choose (choose-1)
-                for(int j=0;j<choose-1;j++){
-                    product=product.multiply(BigInteger.valueOf(sum-j));
-                }
-                for(int j=1;j<=choose-1;j++) {
-                    BigInteger integer=BigInteger.valueOf(j);
+            for(int i=0;i<len;i++)
+                for(int j=0;j<choose;j++){
+                    if(j==0)
+                        tree[j].updateDelta(order[i],1);
+                    else
+                        tree[j].updateDelta(order[i],tree[j-1].rangeSum(0,order[i]-1)%mod);
 
-//                    integer=integer.modInverse(BigInteger.valueOf(mod));
-                    product=product.divide(integer);
-//                    product/=j;
                 }
-                product=product.mod(BigInteger.valueOf(mod));
-//                System.out.println(order[i]+":"+product);
-                if(choose-1==sum){
-                    System.out.println("ans:"+product.longValueExact());
-                }
-
-                ans+=product.longValueExact();
-                ans%=mod;
-            }
+             for(int i=0;i<tree[choose-1].data.length;i++) {
+                 ans += tree[choose - 1].data[i];
+                 ans %= mod;
+             }
             System.out.println("Class #"+d+": "+ans);
 
         }
