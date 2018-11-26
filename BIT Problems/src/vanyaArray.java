@@ -91,18 +91,30 @@ public class vanyaArray{
             inversion.updateDelta(list[i],1);
             inversionCounts[i]= (int) inversion.rangeSum(list[i]+1,len);
         }
-        BIT pairSum=new BIT(len);
+//        System.out.println(Arrays.toString(inversionCounts));
+
+        BIT pairSum=new BIT(len+10);
         for(int i=0;i<len;i++){
-            pairSum.updateDelta(list[i],inversionCounts[i]);
+            pairSum.updateDelta(inversionCounts[i],1);
         }
+//        System.out.println(Arrays.toString(pairSum.data));
 
+        long combinations=0;
         for(int i=0;i<len;i++){
-
+            int needed=sum-i;
+            if(needed>len)
+                continue;
+//            System.out.println(i+" : "+needed+"\t"+pairSum.data[i]*pairSum.rangeSum(needed,len));
+            if(needed<=i)
+                combinations+=pairSum.data[i]*(pairSum.rangeSum(needed,len)-1);
+            else
+                combinations+=pairSum.data[i]*pairSum.rangeSum(needed,len);
         }
+        System.out.println(combinations/2);
 
 
-        System.out.println(inversion);
-        System.out.println(Arrays.toString(inversionCounts));
+//        System.out.println(inversion);
+//        System.out.println(Arrays.toString(inversionCounts));
 
     }
 }
