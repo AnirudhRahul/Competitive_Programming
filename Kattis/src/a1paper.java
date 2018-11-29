@@ -21,7 +21,6 @@ public class a1paper {
         StringTokenizer tokenizer=new StringTokenizer(br.readLine());
         for(int i=2;i<list.length;i++)
             list[i]=Integer.parseInt(tokenizer.nextToken());
-        double curValArea=0;
         double curValTape=0;
         int req=2;
         double curMin=Double.MAX_VALUE;
