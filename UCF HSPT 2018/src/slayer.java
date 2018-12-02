@@ -10,7 +10,11 @@ import java.util.StringTokenizer;
  * Created by user on 12/1/2018.
  */
 public class slayer {
-    //Lots and lots of DP
+    //Reorder the numbers like this so we can sort the moves chronologically
+    //block 2-->0
+    //charge 3-->1
+    //monster 4-->2
+    //attack 1-->4
     static class Move implements Comparable<Move>{
         int type,power,cost;
 
@@ -25,73 +29,77 @@ public class slayer {
                 this.type=2;
             this.power=power;
             this.cost=cost;
-
         }
 
         public boolean isBlock(){return type==0;}
         public boolean isCharge(){return type==1;}
         public boolean isMonster(){return type==2;}
         public boolean isAttack(){return  type==4;}
-
         @Override
         public int compareTo(Move o) {
             return type-o.type;
         }
         public String toString(){return ""+type;}
     }
-    //Health
-    //Index
-    //Energy
-    //Actual value in array is monester health
+    /*
+    Format is:
+    dp[health][index][energy]
+    Actual value in array is the maximum amount we can reduce monster health in the given state
+    */
     static boolean killed;
     static ArrayList<Move> moveList;
     static int[][][] dp;
-    //Returns max amount we can decrease monster health
-    //Used tail recursion to see if we killed the monster before we died
-    public static int recurse(int curHealth,int index, int energy, int val){
+    //Returns max amount we can decrease monster health so we want to MAXIMIZE this
+    //Essentially just simulates taking a move or not taking it
+    //Uses tail recursion to see if we killed the monster before we died
+    public static int recurse(int curHealth,int index, int energy, int monsterHP){
+        //Checks if we killed the monster
+        if(monsterHP<=0)
+            killed=true;
+        //Finished iterating through all the moves
         if(index==moveList.size())
             return 0;
+        //No energy means no more moves possible
         if(energy==0)
             return 0;
-        if(val<=0)
-            killed=true;
+        //Can kill all recursive instances if we already killed the monster
         if(killed)
             return 0;
+        //Check if we already computed this state
         if(dp[curHealth][index][energy]!=0)
             return dp[curHealth][index][energy];
 
         Move cur=moveList.get(index);
+
         int newEnergy=energy-cur.cost;
+        //If we can't take this move just go onto the next move
         if(newEnergy<0)
-            return dp[curHealth][index][energy]=recurse(curHealth,index+1,energy,val);
+            return dp[curHealth][index][energy]=recurse(curHealth,index+1,energy,monsterHP);
+
         if(cur.isBlock()){
             int newHealth=curHealth+cur.power;
-            if(newHealth>101)
-                newHealth=101;
-            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,val),recurse(newHealth,index+1,newEnergy,val));
+            //if you have 101 or more health the monster can't kill you
+            newHealth=Math.min(101,newHealth);
+            //Picks the better option out of taking the move or not taking it
+            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,monsterHP),recurse(newHealth,index+1,newEnergy,monsterHP));
         }
         if(cur.isMonster()){
             int newHealth=curHealth-cur.power;
+            //We definitely want to exclude this path of options if it results in us dying
             if(newHealth<=0)
-                return dp[curHealth][index][energy]=Integer.MIN_VALUE/200;
+                return dp[curHealth][index][energy]=Integer.MIN_VALUE;
             else
-                return dp[curHealth][index][energy]=recurse(newHealth,index+1,energy,val);
+                return dp[curHealth][index][energy]=recurse(newHealth,index+1,energy,monsterHP);
         }
-        if(cur.isCharge()){
-            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,val),cur.power+recurse(curHealth,index+1,newEnergy,val-cur.power));
+        if(cur.isCharge()||cur.isAttack()){
+            //Picks the better option out of taking the move or not taking it
+            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,monsterHP),cur.power+recurse(curHealth,index+1,newEnergy,monsterHP-cur.power));
         }
-        if(cur.isAttack()){
-            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,val),cur.power+recurse(curHealth,index+1,newEnergy,val-cur.power));
-        }
-
 
         return 0;
 
     }
-    //block 2-->0
-    //charge 3-->1
 
-    //attack 1-->4
     public static void main(String[] args) throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         int cases=Integer.parseInt(br.readLine());
@@ -103,6 +111,7 @@ public class slayer {
             int startEnergy=Integer.parseInt(tokenizer.nextToken());
             int monsterHealth=Integer.parseInt(tokenizer.nextToken());
             int monsterAttack=Integer.parseInt(tokenizer.nextToken());
+            //Make sure to re-initialize static variables in each case
             dp=new int[102][101][101];
             moveList=new ArrayList<>();
             killed=false;
@@ -111,15 +120,15 @@ public class slayer {
             int a=Integer.parseInt(stringTokenizer.nextToken());
             int b=Integer.parseInt(stringTokenizer.nextToken());
             int cc=Integer.parseInt(stringTokenizer.nextToken());
-
             moveList.add(new Move(a,b,cc));
             }
+            //Make the monsters attack a move
             moveList.add(new Move(4,monsterAttack,0));
             Collections.sort(moveList);
-//            System.out.println(moveList);
+
             int result=recurse(startHealth,0,startEnergy,monsterHealth);
             int delta=monsterHealth-result;
-            System.out.println("Fight #"+c+": "+(delta<=0||killed?"Win":"Lose"));
+            System.out.println("Fight #"+c+": "+(killed?"Win":"Lose"));
         }
 
     }
