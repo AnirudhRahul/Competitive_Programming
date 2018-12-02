@@ -48,55 +48,55 @@ public class slayer {
     */
     static boolean killed;
     static ArrayList<Move> moveList;
-    static int[][][] dp;
+    static boolean[][][] dp;
     //Returns max amount we can decrease monster health so we want to MAXIMIZE this
     //Essentially just simulates taking a move or not taking it
     //Uses tail recursion to see if we killed the monster before we died
-    public static int recurse(int curHealth,int index, int energy, int monsterHP){
+    public static void recurse(int curHealth,int index, int energy, int monsterHP){
         //Checks if we killed the monster
         if(monsterHP<=0)
             killed=true;
         //Finished iterating through all the moves
         if(index==moveList.size())
-            return 0;
+            return;
         //No energy means no more moves possible
         if(energy==0)
-            return 0;
+            return;
         //Can kill all recursive instances if we already killed the monster
         if(killed)
-            return 0;
+            return;
         //Check if we already computed this state
-        if(dp[curHealth][index][energy]!=0)
-            return dp[curHealth][index][energy];
+        if(dp[curHealth][index][energy])
+            return;
 
         Move cur=moveList.get(index);
+
+        //Mark this state as visited
+        dp[curHealth][index][energy]=true;
 
         int newEnergy=energy-cur.cost;
         //If we can't take this move just go onto the next move
         if(newEnergy<0)
-            return dp[curHealth][index][energy]=recurse(curHealth,index+1,energy,monsterHP);
-
-        if(cur.isBlock()){
+            recurse(curHealth,index+1,energy,monsterHP);
+        else if(cur.isBlock()){
             int newHealth=curHealth+cur.power;
             //if you have 101 or more health the monster can't kill you
             newHealth=Math.min(101,newHealth);
-            //Picks the better option out of taking the move or not taking it
-            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,monsterHP),recurse(newHealth,index+1,newEnergy,monsterHP));
+            //Tries taking the block or not taking it
+            recurse(curHealth,index+1,energy,monsterHP);
+            recurse(newHealth,index+1,newEnergy,monsterHP);
         }
-        if(cur.isMonster()){
+        else if(cur.isMonster()){
             int newHealth=curHealth-cur.power;
             //We definitely want to exclude this path of options if it results in us dying
-            if(newHealth<=0)
-                return dp[curHealth][index][energy]=Integer.MIN_VALUE;
-            else
-                return dp[curHealth][index][energy]=recurse(newHealth,index+1,energy,monsterHP);
+            if(newHealth>0)
+            recurse(newHealth,index+1,energy,monsterHP);
         }
-        if(cur.isCharge()||cur.isAttack()){
+        else if(cur.isCharge()||cur.isAttack()){
             //Picks the better option out of taking the move or not taking it
-            return dp[curHealth][index][energy]=Math.max(recurse(curHealth,index+1,energy,monsterHP),cur.power+recurse(curHealth,index+1,newEnergy,monsterHP-cur.power));
+            recurse(curHealth,index+1,energy,monsterHP);
+            recurse(curHealth,index+1,newEnergy,monsterHP-cur.power);
         }
-
-        return 0;
 
     }
 
@@ -112,7 +112,7 @@ public class slayer {
             int monsterHealth=Integer.parseInt(tokenizer.nextToken());
             int monsterAttack=Integer.parseInt(tokenizer.nextToken());
             //Make sure to re-initialize static variables in each case
-            dp=new int[102][101][101];
+            dp=new boolean[102][101][101];
             moveList=new ArrayList<>();
             killed=false;
             for(int i=0;i<moves;i++){
@@ -126,8 +126,7 @@ public class slayer {
             moveList.add(new Move(4,monsterAttack,0));
             Collections.sort(moveList);
 
-            int result=recurse(startHealth,0,startEnergy,monsterHealth);
-            int delta=monsterHealth-result;
+            recurse(startHealth,0,startEnergy,monsterHealth);
             System.out.println("Fight #"+c+": "+(killed?"Win":"Lose"));
         }
 
