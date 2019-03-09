@@ -48,7 +48,7 @@ public class slayer {
     */
     static boolean killed;
     static ArrayList<Move> moveList;
-    static boolean[][][] dp;
+    static int[][][] dp;
     //Returns max amount we can decrease monster health so we want to MAXIMIZE this
     //Essentially just simulates taking a move or not taking it
     //Uses tail recursion to see if we killed the monster before we died
@@ -66,13 +66,14 @@ public class slayer {
         if(killed)
             return;
         //Check if we already computed this state
-        if(dp[curHealth][index][energy])
+        if(dp[curHealth][index][energy]>monsterHP)
             return;
+        else
+            dp[curHealth][index][energy]=monsterHP;
 
         Move cur=moveList.get(index);
 
         //Mark this state as visited
-        dp[curHealth][index][energy]=true;
 
         int newEnergy=energy-cur.cost;
         //If we can't take this move just go onto the next move
@@ -112,7 +113,7 @@ public class slayer {
             int monsterHealth=Integer.parseInt(tokenizer.nextToken());
             int monsterAttack=Integer.parseInt(tokenizer.nextToken());
             //Make sure to re-initialize static variables in each case
-            dp=new boolean[102][101][101];
+            dp=new int[102][101][101];
             moveList=new ArrayList<>();
             killed=false;
             for(int i=0;i<moves;i++){
