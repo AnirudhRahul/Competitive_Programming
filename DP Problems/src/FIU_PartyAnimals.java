@@ -61,21 +61,7 @@ public class FIU_PartyAnimals {
                 continue;
             workers.get(boss[i]).add(i);
         }
-//        System.out.println(workers);
         System.out.println(recurse(0,false));
-
-//        System.out.println(workers);
-//        ArrayDeque<Integer> q = new ArrayDeque<>();
-//        q.addFirst(0);
-//        while (!q.isEmpty()){
-//            int cur = q.pollFirst();
-////            System.out.println(q);
-//            for(int underling: workers.get(cur))
-//                q.addFirst(underling);
-//            order.add(cur);
-//        }
-
-
 
     }
 }
