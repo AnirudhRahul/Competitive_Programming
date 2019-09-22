@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+	  <module fileurl="file://$PROJECT_DIR$/Adhoc/Adhoc.iml" filepath="$PROJECT_DIR$/Adhoc/Adhoc.iml" />
       <module fileurl="file://$PROJECT_DIR$/BIT Problems/BIT Problems.iml" filepath="$PROJECT_DIR$/BIT Problems/BIT Problems.iml" />
       <module fileurl="file://C:\Users\user\IdeaProjects\Competitive_Programming\Kattis\BIT_Problems.iml" filepath="C:\Users\user\IdeaProjects\Competitive_Programming\Kattis\BIT_Problems.iml" />
       <module fileurl="file://$PROJECT_DIR$/CF_Round 499/CF_Round 499.iml" filepath="$PROJECT_DIR$/CF_Round 499/CF_Round 499.iml" />
