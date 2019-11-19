@@ -158,7 +158,7 @@ public class medianUpdates {
         int[] freq = new int[startIndex+5];
         BIT tree = new BIT(freq);
         for(Query q: queryList){
-            int compressed = mapping.get(q.value);
+            int compressed = Math.toIntExact(mapping.get(q.value));
 
             if(q.add){
                 tree.add(compressed);
