@@ -13,6 +13,8 @@
       <module fileurl="file://$PROJECT_DIR$/USACO_Gold/USACO_2018-2019.iml" filepath="$PROJECT_DIR$/USACO_Gold/USACO_2018-2019.iml" />
       <module fileurl="file://$PROJECT_DIR$/USACO_Gold/USACO_Gold.iml" filepath="$PROJECT_DIR$/USACO_Gold/USACO_Gold.iml" />
       <module fileurl="file://$PROJECT_DIR$/hackerEarth/hackerEarth.iml" filepath="$PROJECT_DIR$/hackerEarth/hackerEarth.iml" />
-    </modules>
+      <module fileurl="file://$PROJECT_DIR$/Uva/Uva.iml" filepath="$PROJECT_DIR$/Uva/Uva.iml" />
+    
+</modules>
   </component>
 </project>
