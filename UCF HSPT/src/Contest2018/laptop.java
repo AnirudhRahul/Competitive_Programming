@@ -1,3 +1,5 @@
+package Contest2018;
+
 import javax.swing.text.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
